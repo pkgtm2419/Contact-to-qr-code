@@ -1,0 +1,8 @@
+.form-label {
+  margin-bottom: 0.1rem;
+  font-weight: 600;
+}
+input[type="range"] {
+  width: 350px;
+  margin: 0;
+}
