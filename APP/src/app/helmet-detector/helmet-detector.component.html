@@ -1,0 +1,38 @@
+<section>
+    <div class="container-fluid mt-2">
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="model-menu">
+              <li (click)="refresh()"><button class="btn badge bg-primary" title="Refresh"><i class="fas fa-sync-alt"></i></button></li> |
+              <li><a> Helmet Detector</a></li>
+          </ul>
+        </div>
+        <div class="col-md-12 mt-2">
+            <div class="row">
+                <div class="col-md-6 p-2 text-center">
+                    <div class="video-container" *ngIf="!error">
+                        <div class="row">
+                            <video [class.show]="!isCaptured" class="card py-2 p-1" [class.hide]="isCaptured" #video id="video" [width]="WIDTH" [height]="HEIGHT" autoplay></video>
+                            <canvas [class.show]="isCaptured" class="card py-2 p-1" [class.hide]="!isCaptured" #canvas id="canvas" [width]="WIDTH" [height]="HEIGHT"></canvas>
+                        </div>
+                    </div>
+                    <div class="snap-container">
+                        <button class="btn btn-primary" *ngIf="!isCaptured" (click)="capture()">Snap Photo</button>
+                        <button class="btn btn-danger" *ngIf="isCaptured" (click)="removeCurrent()">Take Another</button>
+                        <ul class="list-unstyled">
+                            <li *ngFor="let src of captures; let i = index" (click)="setPhoto(i)">
+                                <img [src]="src" class="img-thumbnail" width="100">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 p-2">
+                    <div class="row card p-2">
+                        {{violationData | json}}
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</section>

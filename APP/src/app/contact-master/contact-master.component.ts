@@ -27,7 +27,7 @@ export class ContactMasterComponent implements OnInit {
   imageURL: any;
   countryCode: any;
 
-  constructor( private common: AppService, private toster: ToasterService) {
+  constructor( private common: AppService, private toaster: ToasterService) {
     this.vCard.workAddress.label = 'Firmenanschrift';
     this.vCard.version = '3.0';
   }
@@ -50,7 +50,7 @@ export class ContactMasterComponent implements OnInit {
       this.countryCode = res;
     }),
     (error: any) => {
-      this.toster.error("Some technical error "+error, "Error");
+      this.toaster.error("Some technical error "+error, "Error");
     }
   }
 
@@ -62,13 +62,13 @@ export class ContactMasterComponent implements OnInit {
     this.common.uploadFiles(formData).subscribe((res: any) => {
       if(res.status) {
         this.ngOnInit();
-        this.toster.success(res.message, "Success");
+        this.toaster.success(res.message, "Success");
       } else {
-        this.toster.error(res.message, "Error");
+        this.toaster.error(res.message, "Error");
       }
     }),
     (error: any) => {
-      this.toster.error("Some technical error "+error, "Error");
+      this.toaster.error("Some technical error "+error, "Error");
     }
   }
 
@@ -103,7 +103,7 @@ export class ContactMasterComponent implements OnInit {
       this.imageURL = url;
     }).catch((err: any) => {
       console.log(err);
-      this.toster.warning("Please select contact", "Warning");
+      this.toaster.warning("Please select contact", "Warning");
     });
 
   }
@@ -171,26 +171,26 @@ export class ContactMasterComponent implements OnInit {
       this.common.updateContactData(contData, this.id).subscribe((res: any) => {
         if(res.status) {
           this.ngOnInit();
-          this.toster.success(res.message, "Success");
+          this.toaster.success(res.message, "Success");
         } else {
-          this.toster.error(res.message, "Error");
+          this.toaster.error(res.message, "Error");
         }
       }),
       (error: any) => {
-        this.toster.error(`Technical issue ${error}`, "Error");
+        this.toaster.error(`Technical issue ${error}`, "Error");
       };
       this.editContact = false;
     } else {
       this.common.createContact(contData).subscribe((res: any) => {
         if(res.status) {
           this.ngOnInit();
-          this.toster.success(res.message, "Success");
+          this.toaster.success(res.message, "Success");
         } else {
-          this.toster.error(res.message, "Error");
+          this.toaster.error(res.message, "Error");
         }
       }),
       (error: any) => {
-        this.toster.error(`Technical issue ${error}`, "Error");
+        this.toaster.error(`Technical issue ${error}`, "Error");
       };
     }
   }
@@ -201,13 +201,13 @@ export class ContactMasterComponent implements OnInit {
         this.listData = res.data;
         this.isExcelDownload = true;
         this.limits.push({ key: 'ALL', value: this.listData.length });
-        this.toster.success(res.message, "Success");
+        this.toaster.success(res.message, "Success");
       } else {
-        this.toster.error(res.message, "Error");
+        this.toaster.error(res.message, "Error");
       }
     }),
     (error: any) => {
-      this.toster.error(`Technical issue ${error}`, "Error");
+      this.toaster.error(`Technical issue ${error}`, "Error");
     };
   }
 
@@ -241,13 +241,13 @@ export class ContactMasterComponent implements OnInit {
     this.common.deleteContactData(this.deleteContactID).subscribe((res: any) => {
       if(res.status) {
         this.ngOnInit();
-        this.toster.success(res.message, "Success");
+        this.toaster.success(res.message, "Success");
       } else {
-        this.toster.error(res.message, "Error");
+        this.toaster.error(res.message, "Error");
       }
     }),
     (error: any) => {
-      this.toster.error(`Technical issue ${error}`, "Error");
+      this.toaster.error(`Technical issue ${error}`, "Error");
     };
   }
 
