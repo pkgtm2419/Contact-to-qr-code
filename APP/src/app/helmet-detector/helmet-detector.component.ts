@@ -19,6 +19,12 @@ export class HelmetDetectorComponent {
   isCaptured: boolean = false;
   formData: any = new FormData();
   violationData: any = [];
+  listData: any;
+  pageData = 1;
+  limits = [{ key: '25', value: 25 }, { key: '50', value: 50 }, { key: '100', value: 100 }, { key: '250', value: 250 }, { key: '500', value: 500 }];
+  limit: any = this.limits[0].value;
+  viewImage: any;
+  isCaptureStart: boolean = true;
 
   constructor( private common: VasService, private toaster: ToasterService) { }
 
@@ -26,6 +32,15 @@ export class HelmetDetectorComponent {
   
   async ngAfterViewInit() {
     await this.setupDevices();
+    setInterval(() => {
+      if(this.isCaptureStart) {
+        this.capture();
+      }
+    }, 1000);
+  }
+
+  stopCapture(): void {
+    this.isCaptureStart = !this.isCaptureStart;
   }
 
   async setupDevices() {
@@ -89,6 +104,10 @@ export class HelmetDetectorComponent {
   
   drawImageToCanvas(image: any) {
     this.canvas.nativeElement.getContext("2d").drawImage(image, 0, 0, this.WIDTH, this.HEIGHT);
+  }
+
+  generateQr(data: any): void {
+    this.viewImage = `http://192.168.130.65:8002/${data}`;
   }
 
   refresh(): void {

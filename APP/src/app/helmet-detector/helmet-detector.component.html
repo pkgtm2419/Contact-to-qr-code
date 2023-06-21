@@ -17,22 +17,62 @@
                         </div>
                     </div>
                     <div class="snap-container">
+                        <button class="btn" [ngClass]="[isCaptureStart ? 'btn-danger' : 'bg-success']" (click)="stopCapture()">{{isCaptureStart ? 'Stop' : 'Start'}} Capture</button>
                         <button class="btn btn-primary" *ngIf="!isCaptured" (click)="capture()">Snap Photo</button>
                         <button class="btn btn-danger" *ngIf="isCaptured" (click)="removeCurrent()">Take Another</button>
-                        <ul class="list-unstyled">
+                        <!-- <ul class="list-unstyled">
                             <li *ngFor="let src of captures; let i = index" (click)="setPhoto(i)">
                                 <img [src]="src" class="img-thumbnail" width="100">
                             </li>
-                        </ul>
+                        </ul> -->
                     </div>
                 </div>
                 <div class="col-md-6 p-2">
                     <div class="row card p-2">
-                        {{violationData | json}}
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle" id="export">
+                              <thead class="text-white sticky-top theadbg">
+                                <tr>
+                                  <th scope="col">#</th>
+                                  <th scope="col">Image</th>
+                                  <th scope="col">No. of Violations</th>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let data of violationData | paginate: { itemsPerPage: limit, currentPage: pageData }; let i=index">
+                                  <td data-title="Sr. No.">{{limit*(pageData-1)+i+1}}</td>
+                                  <td data-title="Options" class="text-center">
+                                    <img *ngIf="data?.image" src="http://192.168.130.65:8002/{{data.image}}" (click)="generateQr(data.image)" class="img-thumbnail" width="100" data-bs-toggle="modal" data-bs-target="#imageView">
+                                  </td>
+                                  <td>{{data.number_of_violations}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="input-group-icon input-group-icon-right text-center mt-2">
+                              <pagination-controls (pageChange)="pageData = $event"></pagination-controls>
+                          </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="imageView" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header modalHeaderCenter" style="background: #454397">
+                    <h2 class="modal-title text-white text-center">View Image</h2>
+                    <a class="btn-close2" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></a>
+                  </div>
+                  <div class="modal-body px-5 p-2">
+                    <div class="row">
+                        <img [src]="viewImage" style="width: 100%;">
+                    </div>
+                  </div>
+                  <div class="modal-footer border-btm">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+            </div>
+          </div>
       </div>
     </div>
 </section>
