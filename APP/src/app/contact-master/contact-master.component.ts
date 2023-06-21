@@ -16,8 +16,8 @@ export class ContactMasterComponent implements OnInit {
   listData: any;
   searchData: any;
   pageData = 1;
-  limits = [{ key: '10', value: 10 }, { key: '50', value: 50 }, { key: '100', value: 100 }, { key: '250', value: 250 }, { key: '500', value: 500 }];
-  limit: any = 50;
+  limits = [{ key: '25', value: 25 }, { key: '50', value: 50 }, { key: '100', value: 100 }, { key: '250', value: 250 }, { key: '500', value: 500 }];
+  limit: any = this.limits[0].value;
   isExcelDownload: boolean = false;
   id: any;
   vCard: any = vCardsJS();
