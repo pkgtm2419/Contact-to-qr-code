@@ -41,7 +41,7 @@
                                 <tr *ngFor="let data of violationData | paginate: { itemsPerPage: limit, currentPage: pageData }; let i=index">
                                   <td data-title="Sr. No.">{{limit*(pageData-1)+i+1}}</td>
                                   <td data-title="Options" class="text-center">
-                                    <img *ngIf="data?.image" src="http://192.168.130.65:8002/{{data.image}}" (click)="generateQr(data.image)" class="img-thumbnail" width="100" data-bs-toggle="modal" data-bs-target="#imageView">
+                                    <img *ngIf="data?.image" src="http://103.149.113.100:8224/{{data.image}}" (click)="generateQr(data.image)" class="img-thumbnail" width="100" data-bs-toggle="modal" data-bs-target="#imageView">
                                   </td>
                                   <td>{{data.number_of_violations}}</td>
                                 </tr>

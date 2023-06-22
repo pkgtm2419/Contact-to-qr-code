@@ -25,22 +25,33 @@ export class HelmetDetectorComponent {
   limit: any = this.limits[0].value;
   viewImage: any;
   isCaptureStart: boolean = true;
+  subscription: any;
 
   constructor( private common: VasService, private toaster: ToasterService) { }
 
   ngOnInit(): void { }
-  
+
   async ngAfterViewInit() {
     await this.setupDevices();
-    setInterval(() => {
+    this.getStartCapturing();
+  }
+
+  getStartCapturing(): void {
+    const subscription = setInterval(() => {
       if(this.isCaptureStart) {
         this.capture();
       }
     }, 1000);
+    this.subscription = subscription;
   }
+
 
   stopCapture(): void {
     this.isCaptureStart = !this.isCaptureStart;
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
   }
 
   async setupDevices() {
@@ -63,12 +74,16 @@ export class HelmetDetectorComponent {
   capture() {
     this.drawImageToCanvas(this.video.nativeElement);
     this.captures.push(this.canvas.nativeElement.toDataURL("image/png"));
-    this.setPhoto(this.captures.length-1);
-    this.isCaptured = true;
+    const subscription = this.setPhoto(this.captures.length-1);
+    this.subscription = subscription;
   }
 
   removeCurrent() {
     this.isCaptured = false;
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
   }
 
   setPhoto(idx: number) {
@@ -99,7 +114,7 @@ export class HelmetDetectorComponent {
       if(res.status) {
         this.violationData.push(res);
       }
-    })
+    });
   }
   
   drawImageToCanvas(image: any) {
@@ -107,11 +122,19 @@ export class HelmetDetectorComponent {
   }
 
   generateQr(data: any): void {
-    this.viewImage = `http://192.168.130.65:8002/${data}`;
+    this.viewImage = `http://103.149.113.100:8224/${data}`;
   }
 
   refresh(): void {
     this.ngOnInit();
+  }
+
+  ngOnDestroy(): void {
+    this.isCaptureStart = false;
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
   }
 
 }
