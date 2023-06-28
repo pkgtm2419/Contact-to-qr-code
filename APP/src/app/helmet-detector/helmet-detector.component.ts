@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { ToasterService, VasService } from '../_service';
 
 @Component({
@@ -26,12 +26,23 @@ export class HelmetDetectorComponent {
   viewImage: any;
   isCaptureStart: boolean = true;
   subscription: any;
+  isMobile: boolean = false;
+  @HostListener('window:resize', ['$event'])
+  getScreenSize() {
+    this.isMobile = window.innerWidth < 768;
+  }
 
-  constructor( private common: VasService, private toaster: ToasterService) { }
+  constructor( private common: VasService, private toaster: ToasterService) {
+    this.getScreenSize();
+  }
 
   ngOnInit(): void { }
 
   async ngAfterViewInit() {
+    if(this.isMobile) {
+      this.WIDTH = 480;
+      this.HEIGHT = 640;
+    }
     await this.setupDevices();
     this.getStartCapturing();
   }
@@ -122,7 +133,7 @@ export class HelmetDetectorComponent {
   }
 
   generateQr(data: any): void {
-    this.viewImage = `http://103.149.113.100:8224/${data}`;
+    this.viewImage = `https://103.149.113.100:8224/${data}`;
   }
 
   refresh(): void {
